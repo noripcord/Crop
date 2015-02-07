@@ -14,6 +14,8 @@
 		9D6B56A81A856B1E00A64F74 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D6B56A71A856B1E00A64F74 /* Images.xcassets */; };
 		9D6B56AB1A856B1E00A64F74 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D6B56A91A856B1E00A64F74 /* LaunchScreen.xib */; };
 		9D6B56B71A856B1E00A64F74 /* CropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6B56B61A856B1E00A64F74 /* CropTests.m */; };
+		9D6B56C21A856B7300A64F74 /* Cropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6B56C11A856B7300A64F74 /* Cropper.m */; };
+		9D6B56C41A856FAA00A64F74 /* cerro1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9D6B56C31A856FAA00A64F74 /* cerro1@2x.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,9 @@
 		9D6B56B01A856B1E00A64F74 /* CropTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CropTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D6B56B51A856B1E00A64F74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D6B56B61A856B1E00A64F74 /* CropTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CropTests.m; sourceTree = "<group>"; };
+		9D6B56C01A856B7300A64F74 /* Cropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cropper.h; sourceTree = "<group>"; };
+		9D6B56C11A856B7300A64F74 /* Cropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cropper.m; sourceTree = "<group>"; };
+		9D6B56C31A856FAA00A64F74 /* cerro1@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "cerro1@2x.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +93,8 @@
 				9D6B56A41A856B1E00A64F74 /* Main.storyboard */,
 				9D6B56A71A856B1E00A64F74 /* Images.xcassets */,
 				9D6B56A91A856B1E00A64F74 /* LaunchScreen.xib */,
+				9D6B56C01A856B7300A64F74 /* Cropper.h */,
+				9D6B56C11A856B7300A64F74 /* Cropper.m */,
 				9D6B569A1A856B1E00A64F74 /* Supporting Files */,
 			);
 			path = Crop;
@@ -96,6 +103,7 @@
 		9D6B569A1A856B1E00A64F74 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9D6B56C31A856FAA00A64F74 /* cerro1@2x.jpg */,
 				9D6B569B1A856B1E00A64F74 /* Info.plist */,
 				9D6B569C1A856B1E00A64F74 /* main.m */,
 			);
@@ -201,6 +209,7 @@
 			files = (
 				9D6B56A61A856B1E00A64F74 /* Main.storyboard in Resources */,
 				9D6B56AB1A856B1E00A64F74 /* LaunchScreen.xib in Resources */,
+				9D6B56C41A856FAA00A64F74 /* cerro1@2x.jpg in Resources */,
 				9D6B56A81A856B1E00A64F74 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,6 +231,7 @@
 				9D6B56A31A856B1E00A64F74 /* ViewController.m in Sources */,
 				9D6B56A01A856B1E00A64F74 /* AppDelegate.m in Sources */,
 				9D6B569D1A856B1E00A64F74 /* main.m in Sources */,
+				9D6B56C21A856B7300A64F74 /* Cropper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
