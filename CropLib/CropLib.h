@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Cropper.h"
 
 @interface CropLib : NSObject
 

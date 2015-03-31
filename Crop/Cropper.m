@@ -8,6 +8,21 @@
 
 #import "Cropper.h"
 
+typedef enum : NSUInteger {
+    PanStateNone,
+    PanStateMoving,
+    PanStateChangingSize,
+} PanState;
+
+typedef enum : NSUInteger {
+    None,
+    Left = 1 << 0,
+    Top = 1 << 1,
+    Right = 1 << 2,
+    Bottom = 1 << 3,
+} ResizingState;
+
+
 @interface Cropper ()
 
 @property (assign, nonatomic) CGRect croppingRect;
@@ -15,6 +30,9 @@
 @property (assign, nonatomic) CGPoint lastDistancePan;
 @property (strong, nonatomic) UIView *bar;
 @property (strong, nonatomic) UIImageView *imageView;
+
+@property (nonatomic, assign) PanState panState;
+@property (nonatomic, assign) ResizingState resizingState;
 
 
 @end
@@ -247,32 +265,169 @@
     }
 }
 
-- (void)pan:(UIPanGestureRecognizer*)pan
+- (void)printState:(UIGestureRecognizer*)g
 {
-    if( pan.state == UIGestureRecognizerStateEnded || !pan.numberOfTouches )
-    {
+    id array = @{
+                 
+                 @(UIGestureRecognizerStatePossible):@"Possible",
+                 
+                 @(UIGestureRecognizerStateBegan):@"Began",
+                 @(UIGestureRecognizerStateChanged):@"Changed",
+                 @(UIGestureRecognizerStateEnded):@"Ended",
+                 @(UIGestureRecognizerStateCancelled):@"Cancelled",
+                 @(UIGestureRecognizerStateFailed):@"Failed",
+                 @(UIGestureRecognizerStateRecognized):@"Recognized",
+                 };
+    NSLog(@"g = %@, state = %@",[g class], array[@(g.state)]);
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+//    [touches arra]
+    if( touches.count != 1 ){
         return;
     }
+
+    CGFloat padding2 = 10;
+    UITouch *touch = [touches.objectEnumerator nextObject];
+    CGPoint point = [touch locationInView:self];
+//    CGRect left = CGRectMake(_croppingRect.origin.x-padding2,
+//                             _croppingRect.origin.y+cornerPadding,
+//                             padding2*2,
+//                             _croppingRect.size.height-(cornerPadding*2));
+//    CGRect top = CGRectMake(_croppingRect.origin.x + cornerPadding,
+//                            _croppingRect.origin.y - padding2,
+//                            _croppingRect.size.width - (cornerPadding*2),
+//                            padding2*2);
+//    CGRect right = CGRectMake(_croppingRect.origin.x + _croppingRect.size.width - padding2,
+//                              _croppingRect.origin.y - cornerPadding,
+//                              padding2*2,
+//                              _croppingRect.size.height - (cornerPadding*2));
+//    CGRect bottom = CGRectMake(_croppingRect.origin.x + cornerPadding,
+//                               _croppingRect.origin.y + _croppingRect.size.height - padding2,
+//                               _croppingRect.size.width - (cornerPadding*2),
+//                               padding2*2);
+    CGRect left = CGRectMake(0,
+                             0,
+                             _croppingRect.origin.x + padding2,
+                             self.frame.size.height);
+    CGRect top = CGRectMake(0,
+                            0,
+                            self.frame.size.width,
+                            _croppingRect.origin.y + padding2);
+    CGRect right = CGRectMake(_croppingRect.origin.x + _croppingRect.size.width - padding2,
+                              0,
+                              self.frame.size.width,
+                              self.frame.size.height);
+    CGRect bottom = CGRectMake(0,
+                               _croppingRect.origin.y + _croppingRect.size.height - padding2,
+                               self.frame.size.width,
+                               self.frame.size.height);
+
+    
+    if( CGRectContainsPoint(left, point) )
+    {
+        _resizingState |= Left;
+    }
+    if( CGRectContainsPoint(top, point) )
+    {
+        _resizingState |= Top;
+    }
+    if( CGRectContainsPoint(right, point) )
+    {
+        _resizingState |= Right;
+    }
+    if( CGRectContainsPoint(bottom, point) )
+    {
+        _resizingState |= Bottom;
+    }
+//    else
+//    {
+//        CGRect leftCorner = CGRectMake(_croppingRect.origin.x - cornerPadding, _croppingRect.origin.y - cornerPadding, cornerPadding, cornerPadding);
+//        
+//    }
+
+}
+
+- (void)pan:(UIPanGestureRecognizer*)pan
+{
+//    [self printState:pan];
+    if( pan.state == UIGestureRecognizerStateEnded || !pan.numberOfTouches )
+    {
+        _panState = PanStateNone;
+        _resizingState = None;
+        return;
+    }
+    CGFloat padding = 5;
+//    CGFloat padding2 = 5;
     CGPoint point = [pan locationOfTouch:0 inView:self];
+    if( pan.state == UIGestureRecognizerStateBegan ){
+        if( _resizingState != None ){
+            NSLog(@"PanStateChangingSize");
+            _panState = PanStateChangingSize;
+            // resizing, no op
+        } else if( CGRectContainsPoint(CGRectMake(_croppingRect.origin.x+padding, _croppingRect.origin.y+padding, _croppingRect.size.width-(padding*2), _croppingRect.size.height-(padding*2)), point) ){
+            // moving
+            NSLog(@"PanStateMoving");
+            _panState = PanStateMoving;
+        } else {
+            NSLog(@"PanStateNone");
+            _panState = PanStateNone;
+            _resizingState = None;
+            // cancel
+            [pan setEnabled:NO];
+            [pan setEnabled:YES];
+            return;
+        }
+    }
+
     if( pan.state == UIGestureRecognizerStateChanged )
     {
-        // x
-        _croppingRect.origin.x += (point.x-_lastDistancePan.x);
-        // x checks
-        _croppingRect.origin.x = _croppingRect.origin.x < 0 ? 0 : _croppingRect.origin.x;
-        _croppingRect.origin.x = CGRectGetMaxX(_croppingRect) > self.bounds.size.width ? self.bounds.size.width - _croppingRect.size.width : _croppingRect.origin.x;
-        
-        // y
-        _croppingRect.origin.y += (point.y-_lastDistancePan.y);
-        // y checks
-        _croppingRect.origin.y = _croppingRect.origin.y < 0 ? 0 : _croppingRect.origin.y;
-        _croppingRect.origin.y = CGRectGetMaxY(_croppingRect) > self.bounds.size.height ? self.bounds.size.height - _croppingRect.size.height : _croppingRect.origin.y;
-        
+
+        if( _panState == PanStateMoving ){
+            // x
+            _croppingRect.origin.x += (point.x-_lastDistancePan.x);
+            // x checks
+            _croppingRect.origin.x = _croppingRect.origin.x < 0 ? 0 : _croppingRect.origin.x;
+            _croppingRect.origin.x = CGRectGetMaxX(_croppingRect) > self.bounds.size.width ? self.bounds.size.width - _croppingRect.size.width : _croppingRect.origin.x;
+            
+            // y
+            _croppingRect.origin.y += (point.y-_lastDistancePan.y);
+            // y checks
+            _croppingRect.origin.y = _croppingRect.origin.y < 0 ? 0 : _croppingRect.origin.y;
+            _croppingRect.origin.y = CGRectGetMaxY(_croppingRect) > self.bounds.size.height ? self.bounds.size.height - _croppingRect.size.height : _croppingRect.origin.y;
+        } else if( _panState == PanStateChangingSize ){
+            CGFloat distance;
+            if( (_resizingState&Left) ){
+                distance = _lastDistancePan.x - point.x;
+                _croppingRect.origin.x -= distance;
+                _croppingRect.size.width += distance;
+            }
+            if( (_resizingState&Top) ){
+                distance = _lastDistancePan.y - point.y;
+                _croppingRect.origin.y -= distance;
+                _croppingRect.size.height += distance;
+            }
+            if( (_resizingState&Right) ){
+                distance = _lastDistancePan.x - point.x;
+                _croppingRect.size.width -= distance;
+            }
+            if( (_resizingState&Bottom) ){
+                distance = _lastDistancePan.y - point.y;
+                _croppingRect.size.height -= distance;
+   
+            }
+            
+        }
         // make redraw happen
         [self setNeedsDisplay];
+
     }
-    
+    // advance last distance
     _lastDistancePan = point;
+
+    
+ 
 }
 
 - (void)pinch:(UIPinchGestureRecognizer*)pinch
@@ -340,6 +495,47 @@
     // set cropping rect border
     CGContextSetStrokeColorWithColor(c, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1].CGColor);
     CGContextStrokeRect(c, self.croppingRect);
+    
+    
+    // draw lines
+    CGFloat yPart = self.croppingRect.size.height/3;
+    CGFloat yLine;
+    yLine = self.croppingRect.origin.y + yPart;
+
+    CGContextBeginPath(c);
+    CGContextMoveToPoint(c, self.croppingRect.origin.x,  yLine);
+    CGContextAddLineToPoint(c, self.croppingRect.origin.x + self.croppingRect.size.width, yLine);
+    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextStrokePath(c);
+    
+    yLine = self.croppingRect.origin.y + (yPart * 2);
+    CGContextBeginPath(c);
+    CGContextMoveToPoint(c, self.croppingRect.origin.x, yLine);
+    CGContextAddLineToPoint(c, self.croppingRect.origin.x + self.croppingRect.size.width, yLine);
+    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextStrokePath(c);
+    
+    CGFloat xPart = self.croppingRect.size.width/3;
+    CGFloat xLine;
+    xLine = self.croppingRect.origin.x + xPart;
+    
+    CGContextBeginPath(c);
+    CGContextMoveToPoint(c, xLine,  self.croppingRect.origin.y);
+    CGContextAddLineToPoint(c, xLine, self.croppingRect.origin.y + self.croppingRect.size.height);
+    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextStrokePath(c);
+
+    
+    xLine = self.croppingRect.origin.x + (xPart * 2);
+    
+    CGContextBeginPath(c);
+    CGContextMoveToPoint(c, xLine,  self.croppingRect.origin.y);
+    CGContextAddLineToPoint(c, xLine, self.croppingRect.origin.y + self.croppingRect.size.height);
+    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextStrokePath(c);
+
+
+    
     
 }
 
