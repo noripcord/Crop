@@ -10,7 +10,8 @@ Download project & execute to see how it works.
 
 ViewController.m has the code you need to include, snippet here: 
 
-`- (IBAction)cropit:(id)sender {`
+```
+- (IBAction)cropit:(id)sender {
     
     self.cropper = [[Cropper alloc] initWithImageView:self.imageView];
     __weak ViewController *_self = self;
