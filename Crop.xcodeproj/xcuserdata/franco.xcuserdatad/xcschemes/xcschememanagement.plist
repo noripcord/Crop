@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CropLib.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>9D6B56AF1A856B1E00A64F74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9D6B56DC1A87BE9900A64F74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9D6B56E61A87BE9900A64F74</key>
 		<dict>
 			<key>primary</key>
 			<true/>

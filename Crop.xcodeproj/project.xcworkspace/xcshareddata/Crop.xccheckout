@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7223E85A-A8DF-45C9-A168-9F66B0C70C2C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Crop</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1443F369E994A253A2ED5F9E4210AE04385F5452</key>
+		<string>https://github.com/noripcord/Crop.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Crop.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1443F369E994A253A2ED5F9E4210AE04385F5452</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/noripcord/Crop.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1443F369E994A253A2ED5F9E4210AE04385F5452</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1443F369E994A253A2ED5F9E4210AE04385F5452</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Crop</string>
+		</dict>
+	</array>
+</dict>
+</plist>
