@@ -496,8 +496,10 @@ typedef enum : NSUInteger {
     CGContextSetStrokeColorWithColor(c, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1].CGColor);
     CGContextStrokeRect(c, self.croppingRect);
     
-    
+    CGFloat minHeightToShow = 100;
+    UIColor *horizColor = [UIColor colorWithWhite:1 alpha:(self.croppingRect.size.height/minHeightToShow)-0.5];
     // draw lines
+    // horizontal
     CGFloat yPart = self.croppingRect.size.height/3;
     CGFloat yLine;
     yLine = self.croppingRect.origin.y + yPart;
@@ -505,16 +507,21 @@ typedef enum : NSUInteger {
     CGContextBeginPath(c);
     CGContextMoveToPoint(c, self.croppingRect.origin.x,  yLine);
     CGContextAddLineToPoint(c, self.croppingRect.origin.x + self.croppingRect.size.width, yLine);
-    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(c, horizColor.CGColor);
     CGContextStrokePath(c);
     
     yLine = self.croppingRect.origin.y + (yPart * 2);
+    
     CGContextBeginPath(c);
     CGContextMoveToPoint(c, self.croppingRect.origin.x, yLine);
     CGContextAddLineToPoint(c, self.croppingRect.origin.x + self.croppingRect.size.width, yLine);
-    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(c, horizColor.CGColor);
     CGContextStrokePath(c);
-    
+
+    CGFloat minWidthToShow = 100;
+    UIColor *vertColor = [UIColor colorWithWhite:1 alpha:(self.croppingRect.size.width/minWidthToShow)-0.5];
+
+    // vertical
     CGFloat xPart = self.croppingRect.size.width/3;
     CGFloat xLine;
     xLine = self.croppingRect.origin.x + xPart;
@@ -522,18 +529,20 @@ typedef enum : NSUInteger {
     CGContextBeginPath(c);
     CGContextMoveToPoint(c, xLine,  self.croppingRect.origin.y);
     CGContextAddLineToPoint(c, xLine, self.croppingRect.origin.y + self.croppingRect.size.height);
-    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(c, vertColor.CGColor);
     CGContextStrokePath(c);
 
-    
     xLine = self.croppingRect.origin.x + (xPart * 2);
     
     CGContextBeginPath(c);
     CGContextMoveToPoint(c, xLine,  self.croppingRect.origin.y);
     CGContextAddLineToPoint(c, xLine, self.croppingRect.origin.y + self.croppingRect.size.height);
-    CGContextSetStrokeColorWithColor(c, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(c, vertColor.CGColor);
     CGContextStrokePath(c);
 
+    // vamos rafa
+    CGContextBeginPath(c);
+    CGContextMoveToPoint(c, xLine,  self.croppingRect.origin.y);
 
     
     
